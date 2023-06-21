@@ -1,0 +1,67 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <cctype>
+
+void replaceWord(std::string& text, const std::string& oldWord, const std::string& newWord) {
+    size_t pos = 0;
+    while ((pos = text.find(oldWord, pos)) != std::string::npos) {
+        text.replace(pos, oldWord.length(), newWord);
+        pos += newWord.length();
+    }
+}
+
+void capitalizeSentences(std::string& text) {
+    bool capitalizeNext = true;
+    for (size_t i = 0; i < text.length(); ++i) {
+        if (capitalizeNext && std::isalpha(text[i])) {
+            text[i] = std::toupper(text[i]);
+            capitalizeNext = false;
+        }
+        else if (text[i] == '.') {
+            capitalizeNext = true;
+        }
+    }
+}
+
+void countLettersDigits(const std::string& text, int& letterCount, int& digitCount) {
+    for (char ch : text) {
+        if (std::isalpha(ch)) {
+            ++letterCount;
+        }
+        else if (std::isdigit(ch)) {
+            ++digitCount;
+        }
+    }
+}
+
+int main() {
+    std::string text;
+    std::cout << "Enter a text: ";
+    std::getline(std::cin, text);
+
+    std::string oldWord;
+    std::cout << "Enter the word to replace: ";
+    std::cin >> oldWord;
+
+    std::cin.ignore(); 
+
+    std::string newWord;
+    std::cout << "Enter the new word: ";
+    std::getline(std::cin, newWord);
+
+    replaceWord(text, oldWord, newWord);
+    std::cout << "Modified text after replacing: " << text << std::endl;
+
+    capitalizeSentences(text);
+    std::cout << "Modified text with capitalized sentences:\n" << text << std::endl;
+
+    int letterCount = 0;
+    int digitCount = 0;
+    countLettersDigits(text, letterCount, digitCount);
+    std::cout << "Letter count in the text: " << letterCount << std::endl;
+    std::cout << "Digit count in the text: " << digitCount << std::endl;
+
+    return 0;
+}
+
